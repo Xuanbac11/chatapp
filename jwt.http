@@ -1,0 +1,54 @@
+//Login user
+POST  http://localhost:3000/api/user/login
+Content-Type: application/json
+
+{
+    "Username": "bacnv111",
+    "Password": "1234567"
+}
+###
+//list user
+GET  http://localhost:3000/api/user/list
+Authorization: Beaer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6ImJhY252MTExIiwiUGFzc3dvcmQiOiIxMjM0NTY3IiwiaWF0IjoxNjg4MTAwMTI1LCJleHAiOjE2ODgxMDAxODV9.aFnZ54HNgRMzcRbdRcUyb0lFf5oJW5Xq8QR7ZlZnzEY
+
+
+
+//CRUD sp
+###
+//get list sp
+GET http://localhost:3000/api/sp/listSp
+###
+//get list category
+GET http://localhost:3000/api/sp/listCat
+
+###
+//add sp
+POST http://localhost:3000/api/sp/addSp
+//body: 
+# {
+#     "name": "Chuột Dareuu",
+#     "content": "DAREU A950 3 MODE Pink chuột không dây",
+#     "price": 250000,
+#     "idCat": "6427eb0d0ffad48784101dbe",
+#     "img": "http://localhost:3000/uploads/chuot.jpg"
+# }
+
+### 
+//detail sp
+GET http://localhost:3000/api/sp/detailSp/
+//params id: 6427f5352736ea4564bfe14f
+
+###
+//update sp
+POST http://localhost:3000/api/sp/editSp
+//params id: 6427f5352736ea4564bfe14f
+//body : 
+
+###
+//delete sp
+POST http://localhost:3000/api/sp/deleteSp
+//params id: 6427f5352736ea4564bfe14f
+
+
+
+
