@@ -19,6 +19,14 @@ exports.userLogin = async (req, res, next) => {
         };
         const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
         objReturn.data = { accessToken, objU };
+        
+        var io = req.app.get("io");
+        io.on("connection", (socket) => {
+          socket.on("Send_mess", (idUser,fullname,content) => {
+            userCtrl.addChat(idUser,content)
+          })
+        });
+
         res.json(objReturn);
       } else {
         objReturn.status = 0;
