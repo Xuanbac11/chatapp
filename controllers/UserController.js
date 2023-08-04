@@ -19,14 +19,6 @@ exports.userLogin = async (req, res, next) => {
         };
         const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
         objReturn.data = { accessToken, objU };
-        
-        var io = req.app.get("io");
-        io.on("connection", (socket) => {
-          socket.on("Send_mess", (idUser,fullname,content) => {
-            userCtrl.addChat(idUser,content)
-          })
-        });
-
         res.json(objReturn);
       } else {
         objReturn.status = 0;
@@ -121,7 +113,7 @@ exports.addChat = async (idUser, content) => {
     await obj.save();
     app.sendSocket(idUser,objU.fullname,content)
   } catch (error) {
-
+      console.log('addchat err ',error);
   }
 };
 
@@ -134,12 +126,11 @@ exports.updateUser = async (req, res, next) => {
   let obj = {}
   obj.fullname = fullname;
   obj.Email = Email;
-  console.log('updateUser ',obj);
   try {
     await myMD.userModel.findByIdAndUpdate(_id, { $set: obj });
   } catch (error) {
     objReturn.status = 0;
-    console.log("err ",error);
+    objReturn.msg = error.message
   }
   res.json(objReturn);
 };
@@ -152,12 +143,11 @@ exports.changePass = async (req, res, next) => {
   const { _id, newPass } = req.body;
   let obj = {}
   obj.Password = newPass
-  console.log('changePass ',obj);
   try {
     await myMD.userModel.findByIdAndUpdate(_id, { $set: obj });
   } catch (error) {
     objReturn.status = 0;
-    console.log("err ",error);
+    objReturn.msg = error.message
   }
   res.json(objReturn);
 };

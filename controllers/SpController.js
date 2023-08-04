@@ -12,13 +12,10 @@ exports.getListSp = async (req, res, next) => {
   let listSp = [];
   let listCat = [];
   let mySet = new Set();
-  let mySetToArr = []
+  let mySetToArr = [];
   try {
-    listSp = await myMD.spModel
-      .find()
-      .sort({ _id: -1 })
-      .populate("idCat");
-      objReturn.data = listSp;
+    listSp = await myMD.spModel.find().sort({ _id: -1 }).populate("idCat");
+    objReturn.data = listSp;
     listCat = await myMD.catModel.find();
     listSp.map((i) => {
       listCat.map((j) => {
@@ -31,16 +28,15 @@ exports.getListSp = async (req, res, next) => {
       mySetToArr.push(i);
     });
     const filteredArray = listCat.filter((i) => !mySetToArr.includes(i.name));
-    filteredArray.forEach(async (i) =>{
-      await myMD.catModel.deleteOne({ _id: i._id }); 
+    filteredArray.forEach(async (i) => {
+      await myMD.catModel.deleteOne({ _id: i._id });
     });
   } catch (error) {
     objReturn.status = 0;
     objReturn.msg = error.message;
   }
-  setTimeout(() => {
-    res.json(objReturn);
-  }, 500);
+
+  res.json(objReturn);
 };
 
 exports.getDetailSp = async (req, res, next) => {
@@ -56,7 +52,7 @@ exports.getDetailSp = async (req, res, next) => {
 };
 
 exports.getListCat = async (req, res, next) => {
-  objReturn.data = undefined
+  objReturn.data = undefined;
   let listCat = [];
   try {
     listCat = await myMD.catModel.find();
@@ -72,21 +68,20 @@ exports.addCat = async (req, res, next) => {
   const { name } = req.body;
   objReturn.data = undefined;
   let obj = new myMD.catModel();
-  obj.name = name
+  obj.name = name;
   let objC = await myMD.catModel.findOne({ name: name });
   if (objC == null) {
     objReturn.status = 200;
     objReturn.msg = "OK";
     try {
       await obj.save();
-    } catch (error) {
-    }
+    } catch (error) {}
   } else {
     objReturn.status = 0;
     objReturn.msg = "Đã tồn tại";
   }
-  res.json(objReturn)
-}
+  res.json(objReturn);
+};
 
 exports.addSp = async (req, res, next) => {
   const uerId = "123";
@@ -101,8 +96,9 @@ exports.addSp = async (req, res, next) => {
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
   }
-  const fileItem = req.file
-  obj.img = "http://localhost:3000/images/" + uerId + "/" + req.file.originalname;
+  const fileItem = req.file;
+  obj.img =
+    "http://localhost:3000/images/" + uerId + "/" + req.file.originalname;
   const filePath = path.join(uploadDir, fileItem.originalname);
 
   fs.rename(fileItem.path, filePath, async (err) => {
@@ -120,9 +116,7 @@ exports.addSp = async (req, res, next) => {
       }
     }
 
-    setTimeout(() => {
-      res.json(objReturn);
-    }, 500);
+    res.json(objReturn);
   });
 };
 
@@ -160,23 +154,20 @@ exports.editSp = async (req, res, next) => {
             objReturn.msg = error.message;
           }
         }
-        setTimeout(() => {
-          return res.json(objReturn);
-        }, 500);
+
+        return res.json(objReturn);
       });
     } catch (error) {
       objReturn.data = undefined;
       await myMD.spModel.findByIdAndUpdate(_id, { $set: obj });
-      setTimeout(() => {
-        return res.json(objReturn);
-      }, 500);
+
+      return res.json(objReturn);
     }
   } catch (error) {
     objReturn.status = 0;
     objReturn.msg = error.message;
-    setTimeout(() => {
-      return res.json(objReturn);
-    }, 500);
+
+    return res.json(objReturn);
   }
 };
 
@@ -194,7 +185,5 @@ exports.deleteSp = async (req, res, next) => {
     objReturn.status = 0;
     objReturn.msg = error.message;
   }
-  setTimeout(() => {
-    res.json(objReturn);
-  }, 500);
+  res.json(objReturn);
 };
