@@ -70,6 +70,6 @@ exports.sendSocket = (idUser,fullname,content) => {
   io.emit("ThongBaoTuServer", idUser,fullname,content);
 }
 
-// httpServer.listen(3001);
+httpServer.listen(443);
 
 module.exports = app;
